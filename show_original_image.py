@@ -12,6 +12,10 @@ import torchvision
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 
+
+#--------------
+# cifar10
+#--------------
 # choose index
 idx = 1000  # <-- set n here
 
@@ -41,36 +45,34 @@ plt.title(f"idx={idx}, label={classes[label]}")
 plt.axis("off")
 plt.show()
 
-import torch
-import torchvision
-import torchvision.transforms as transforms
-import matplotlib.pyplot as plt
 
+#--------------
+# celebA
+#--------------
 # choose index
-idx = 0  # <-- set n here
+idx = 1500  # <-- set n here
 
-# CIFAR-10 normalization (standard)
+# CelebA transform (resize + tensor)
 transform = transforms.Compose([
+    transforms.Resize((128, 128)),  # optional but recommended
     transforms.ToTensor()
 ])
 
-# load dataset
-cifar10 = torchvision.datasets.CIFAR10(
+# load CelebA dataset
+celeba = torchvision.datasets.CelebA(
     root="./data",
-    train=True,
+    split="train",          # "train", "valid", or "test"
+    target_type="attr",     # attributes (optional)
     download=True,
     transform=transform
 )
 
-# get image and label
-image, label = cifar10[idx]
-
-# CIFAR-10 class names
-classes = cifar10.classes
+# get image and attributes
+image, attrs = celeba[idx]
 
 # show image
 plt.figure(figsize=(3, 3))
 plt.imshow(image.permute(1, 2, 0))  # C,H,W -> H,W,C
-plt.title(f"idx={idx}, label={classes[label]}")
+plt.title(f"CelebA idx={idx}")
 plt.axis("off")
 plt.show()
